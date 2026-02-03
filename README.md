@@ -1,3 +1,5 @@
+![Logo](./_assets/logo.jpg)
+
 # Semantic File Organizer
 
 A deterministic Python pipeline for semantically classifying and organizing files using LLM-based classification. 
