@@ -43,3 +43,8 @@ htmlcov/
 data/
 output/
 annotations/
+
+# Test files
+test_files/
+test_config.json
+organized_files/
