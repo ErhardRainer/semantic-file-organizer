@@ -83,6 +83,18 @@ semantic-organizer --source ./files --output ./organized --min-confidence 0.8
 semantic-organizer --source ./files --output ./organized --log-level DEBUG
 ```
 
+### Standalone Scanner (JSON Export)
+
+If you only want a deterministic file scan with JSON output (PowerShell-parity format),
+run the scanner module directly:
+
+```bash
+python -m semantic_organizer.scanner --input-dir /path/to/scan --output-dir ./scan-output
+
+# Optional: include MD5 checksums
+python -m semantic_organizer.scanner --input-dir /path/to/scan --output-dir ./scan-output --checksum
+```
+
 ## Configuration File Format
 
 The configuration file is a JSON file with the following structure:
@@ -126,6 +138,9 @@ from semantic_organizer.scanner import Scanner
 scanner = Scanner(exclude_patterns=[".*", "__pycache__"])
 scanned_files = scanner.scan_directory(Path("/path/to/files"), recursive=True)
 ```
+
+Optional checksum computation and JSON export are supported via
+`python -m semantic_organizer.scanner`.
 
 ### Annotator (`annotator.py`)
 

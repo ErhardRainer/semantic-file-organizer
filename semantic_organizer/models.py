@@ -23,6 +23,20 @@ class FileCategory(str, Enum):
     UNKNOWN = "unknown"
 
 
+def default_category_paths() -> Dict["FileCategory", str]:
+    """Default output folders for each file category."""
+    return {
+        FileCategory.DOCUMENT: "documents",
+        FileCategory.IMAGE: "images",
+        FileCategory.VIDEO: "videos",
+        FileCategory.AUDIO: "audio",
+        FileCategory.CODE: "code",
+        FileCategory.ARCHIVE: "archives",
+        FileCategory.DATA: "data",
+        FileCategory.UNKNOWN: "unknown",
+    }
+
+
 class FileAnnotation(BaseModel):
     """LLM-generated annotation for a file."""
     file_path: str = Field(..., description="Original file path")
@@ -51,6 +65,7 @@ class ScannedFile(BaseModel):
     size_bytes: int = Field(..., description="File size in bytes")
     modified_time: datetime = Field(..., description="Last modified timestamp")
     is_hidden: bool = Field(default=False, description="Whether file is hidden")
+    checksum: Optional[str] = Field(default=None, description="Optional MD5 checksum")
 
     @field_validator('path')
     @classmethod
@@ -65,7 +80,8 @@ class OrganizationRule(BaseModel):
     """Decision rule for organizing files."""
     min_confidence: float = Field(0.7, ge=0.0, le=1.0, description="Minimum confidence threshold")
     category_paths: Dict[FileCategory, str] = Field(
-        ..., description="Target directory for each category"
+        default_factory=default_category_paths,
+        description="Target directory for each category"
     )
     preserve_structure: bool = Field(False, description="Preserve original subdirectory structure")
     allow_rename: bool = Field(False, description="Allow file renaming based on suggestions")

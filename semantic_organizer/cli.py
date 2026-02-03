@@ -8,7 +8,7 @@ import json
 import sys
 from pathlib import Path
 
-from semantic_organizer.models import FileCategory, OrganizationRule, PipelineConfig
+from semantic_organizer.models import OrganizationRule, PipelineConfig, default_category_paths
 from semantic_organizer.pipeline import Pipeline, configure_logging
 
 
@@ -24,16 +24,7 @@ def create_default_config(source_dir: str, output_dir: str) -> PipelineConfig:
         PipelineConfig with default settings
     """
     # Default category paths
-    category_paths = {
-        FileCategory.DOCUMENT: "documents",
-        FileCategory.IMAGE: "images",
-        FileCategory.VIDEO: "videos",
-        FileCategory.AUDIO: "audio",
-        FileCategory.CODE: "code",
-        FileCategory.ARCHIVE: "archives",
-        FileCategory.DATA: "data",
-        FileCategory.UNKNOWN: "unknown",
-    }
+    category_paths = default_category_paths()
 
     rules = OrganizationRule(
         min_confidence=0.7,
