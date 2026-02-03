@@ -1,0 +1,24 @@
+{
+  "source_directory": "/absolute/path/to/source",
+  "output_directory": "/absolute/path/to/output",
+  "annotation_storage": "annotations.json",
+  "rules": {
+    "min_confidence": 0.7,
+    "category_paths": {
+      "document": "documents",
+      "image": "images",
+      "video": "videos",
+      "audio": "audio",
+      "code": "code",
+      "archive": "archives",
+      "data": "data",
+      "unknown": "unknown"
+    },
+    "preserve_structure": false,
+    "allow_rename": false
+  },
+  "llm_model": "gpt-3.5-turbo",
+  "dry_run": true,
+  "recursive": true,
+  "exclude_patterns": [".*", "__pycache__", "node_modules"]
+}
