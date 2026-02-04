@@ -48,3 +48,6 @@ annotations/
 test_files/
 test_config.json
 organized_files/
+
+# Agent task metadata backups
+*.invalid.*.bak
