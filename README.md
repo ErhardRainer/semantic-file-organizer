@@ -266,6 +266,81 @@ pytest
 pytest --cov=semantic_organizer
 ```
 
+## Agent-Driven Change History
+
+This project includes a change history system for tracking agent-driven modifications.
+
+### Overview
+
+The system consists of:
+- **`.agent_task.json`** - Metadata file in repository root containing task information
+- **`History.md`** - Append-only Markdown table tracking all changes
+- **`tools/update_history.py`** - Python script managing both files
+
+### Usage for Agents
+
+1. After completing a task, update `.agent_task.json` with:
+   ```json
+   {
+     "date": "2026-02-04",
+     "agent": "copilot",
+     "short_description": "Fixed authentication bug",
+     "task_id": "ISSUE-123",
+     "changes": [
+       {"path": "src/auth.py", "type": "modified"}
+     ]
+   }
+   ```
+
+2. Run the update script:
+   ```bash
+   python tools/update_history.py
+   ```
+
+3. The script will append a row to `History.md`:
+   ```
+   | 2026-02-04 | copilot | [ISSUE-123] Fixed authentication bug |
+   ```
+
+### Required Fields
+
+- `date` - Task completion date (ISO 8601 or YYYY-MM-DD)
+- `agent` - Agent identifier (e.g., "copilot", "codex")
+- `short_description` - One-line description of changes
+
+### Optional Fields
+
+- `task_id` - Task/issue identifier (included in history if present)
+- `title`, `description` - Extended task information
+- `changes` - Array of changed files
+- `pr`, `commit` - Related PR/commit references
+- `notes` - Additional notes
+
+### Script Features
+
+- **Auto-scaffold**: Creates `.agent_task.json` with defaults if missing
+- **Invalid JSON handling**: Backs up invalid JSON and creates fresh scaffold
+- **Idempotent**: Won't duplicate the last row on repeated runs
+- **CLI overrides**: Use `--agent` and `--short` to fill placeholder values
+
+### Advanced Usage
+
+```bash
+# Override metadata file location
+python tools/update_history.py --meta /path/to/metadata.json
+
+# Override history file location  
+python tools/update_history.py --history /path/to/History.md
+
+# Fill placeholder values via CLI
+python tools/update_history.py --agent "my-agent" --short "Did something"
+
+# Specify custom repo root
+python tools/update_history.py --repo-root /path/to/repo
+```
+
+For more details, see the documentation in `tools/update_history.py` and tests in `tests/test_update_history.py`.
+
 ## License
 
 MIT License
